@@ -9,27 +9,28 @@ import { useAuthStore } from "@/store/auth";
 const navLinks = {
     ADMIN: [
         { href: "/dashboard", label: "Dashboard", icon: Home },
-        { href: "/sales", label: "Sales", icon: ShoppingCart },
-        { href: "/inventory", label: "Inventory", icon: Package },
-        { href: "/customers", label: "Customers", icon: Users },
-        { href: "/reports", label: "Reports", icon: BarChart2 },
-        { href: "/audit-logs", label: "Audit Logs", icon: FileText },
+        { href: "/dashboard/sales", label: "Sales", icon: ShoppingCart },
+        { href: "/dashboard/inventory", label: "Inventory", icon: Package },
+        { href: "/dashboard/customers", label: "Customers", icon: Users },
+        { href: "/dashboard/reports", label: "Reports", icon: BarChart2 },
+        { href: "/dashboard/audit-logs", label: "Audit Logs", icon: FileText },
     ],
     MANAGER: [
         { href: "/dashboard", label: "Dashboard", icon: Home },
-        { href: "/sales", label: "Sales", icon: ShoppingCart },
-        { href: "/inventory", label: "Inventory", icon: Package },
-        { href: "/customers", label: "Customers", icon: Users },
-        { href: "/reports", label: "Reports", icon: BarChart2 },
+        { href: "/dashboard/sales", label: "Sales", icon: ShoppingCart },
+        { href: "/dashboard/inventory", label: "Inventory", icon: Package },
+        { href: "/dashboard/customers", label: "Customers", icon: Users },
+        { href: "/dashboard/reports", label: "Reports", icon: BarChart2 },
     ],
     CASHIER: [
-        { href: "/sales", label: "POS Terminal", icon: ShoppingCart },
-        { href: "/customers", label: "Customers", icon: Users },
+        { href: "/dashboard/sales", label: "POS Terminal", icon: ShoppingCart },
+        { href: "/dashboard/customers", label: "Customers", icon: Users },
     ],
     STOCK: [
-        { href: "/inventory", label: "Inventory", icon: Package },
+        { href: "/dashboard/inventory", label: "Inventory", icon: Package },
     ]
 };
+
 
 export default function Sidebar() {
   const pathname = usePathname();
