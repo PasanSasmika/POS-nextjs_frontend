@@ -11,7 +11,8 @@ import {
   Form,FormControl,FormField,FormItem,FormLabel,FormMessage,} from "@/components/ui/form";
 import {Card,CardContent,CardDescription,CardHeader,CardTitle,} from "@/components/ui/card";
 import api from "@/lib/api";
-
+import { useAuthStore } from "@/store/auth";
+import { jwtDecode } from 'jwt-decode';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Username is required." }),
@@ -30,20 +31,24 @@ export default function LoginPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setError(null);
-    try {
-const response = await api.post("/auth/login", values);      
-      
-      console.log("Login successful:", response.data);
-      localStorage.setItem("access_token", response.data.access_token);
-      
-      router.push("/dashboard");
-    } catch (err: any) {
-      console.error("Login failed:", err);
-      setError("Invalid username or password. Please try again.");
-    }
+ const { setAuth } = useAuthStore(); // Get the setAuth action
+
+async function onSubmit(values: z.infer<typeof formSchema>) {
+  setError(null);
+  try {
+    const response = await api.post('/auth/login', values);
+
+    const { access_token } = response.data;
+    const decodedUser = jwtDecode(access_token); 
+
+    setAuth(access_token, decodedUser); 
+
+    router.push('/dashboard'); 
+  } catch (err: any) {
+    console.error("Login failed:", err);
+    setError("Invalid username or password. Please try again.");
   }
+}
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
