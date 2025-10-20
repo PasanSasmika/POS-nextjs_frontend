@@ -19,6 +19,10 @@ export type Product = {
   category: string;
   stockQuantity: number;
   sellingPrice: number;
+  costPrice: number;
+  supplierId: number;
+  reorderLevel: number;
+  expiryDate?: string | null;
 };
 
 export const columns: ColumnDef<Product>[] = [
