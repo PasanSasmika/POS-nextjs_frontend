@@ -11,21 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// This type is used to define the shape of our data.
-export type Product = {
-  id: number;
-  sku: string;
-  name: string;
-  category: string;
-  stockQuantity: number;
-  sellingPrice: number;
-  costPrice: number;
-  supplierId: number;
-  reorderLevel: number;
-  expiryDate?: string | null;
-};
+// Import the shared type
+import { Product } from "./ProductType";
 
-export const columns: ColumnDef<Product>[] = [
+// Define the props for the function
+interface ProductColumnsProps {
+  onEdit: (product: Product) => void;
+  onDelete: (product: Product) => void;
+}
+
+// Convert 'columns' to a function 'getColumns'
+export const getColumns = ({ onEdit, onDelete }: ProductColumnsProps): ColumnDef<Product>[] => [
   {
     accessorKey: "sku",
     header: "SKU",
@@ -59,7 +55,7 @@ export const columns: ColumnDef<Product>[] = [
       const amount = parseFloat(row.getValue("sellingPrice"));
       const formatted = new Intl.NumberFormat("en-LK", {
         style: "currency",
-        currency: "LKR",
+        currency: "LKR", // You can change this to your currency
       }).format(amount);
       return <div className="font-medium">{formatted}</div>;
     },
@@ -81,8 +77,17 @@ export const columns: ColumnDef<Product>[] = [
             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(product.sku)}>
               Copy SKU
             </DropdownMenuItem>
-            <DropdownMenuItem>Edit Product</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-500">Delete Product</DropdownMenuItem>
+            
+            {/* Wire up the click handlers */}
+            <DropdownMenuItem onClick={() => onEdit(product)}>
+              Edit Product
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              onClick={() => onDelete(product)}
+              className="text-red-500"
+            >
+              Delete Product
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

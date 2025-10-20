@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import api from "@/lib/api";
+import { Product } from "./ProductType";
 
-// Define the shape of the form data
 interface FormData {
   name: string;
   sku: string;
@@ -15,17 +15,16 @@ interface FormData {
   stockQuantity: number;
   sellingPrice: number;
   costPrice: number;
-  supplierId: string; // Use string for select value
+  supplierId: string;
 }
 
-// Define the props, including the vendor list and a success callback
 interface ProductFormProps {
   vendors: { id: number; name: string }[];
   onSuccess: () => void;
+  initialData?: Product | null; 
 }
 
-export default function ProductForm({ vendors, onSuccess }: ProductFormProps) {
-  // State for all form fields
+export default function ProductForm({ vendors, onSuccess, initialData }: ProductFormProps) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     sku: "",
@@ -35,12 +34,24 @@ export default function ProductForm({ vendors, onSuccess }: ProductFormProps) {
     costPrice: 0,
     supplierId: "",
   });
-
-  // State for validation errors
+  
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [loading, setLoading] = useState(false);
 
-  // Handle changes for text and number inputs
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        sku: initialData.sku,
+        category: initialData.category,
+        stockQuantity: initialData.stockQuantity,
+        sellingPrice: initialData.sellingPrice,
+        costPrice: initialData.costPrice,
+        supplierId: String(initialData.supplierId),
+      });
+    }
+  }, [initialData]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setFormData(prev => ({
@@ -49,12 +60,10 @@ export default function ProductForm({ vendors, onSuccess }: ProductFormProps) {
     }));
   };
 
-  // Handle changes for the select dropdown
   const handleSelectChange = (value: string) => {
     setFormData(prev => ({ ...prev, supplierId: value }));
   };
   
-  // Manual validation function
   const validateForm = () => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
     if (!formData.name) newErrors.name = "Name is required";
@@ -64,7 +73,6 @@ export default function ProductForm({ vendors, onSuccess }: ProductFormProps) {
     if (formData.sellingPrice < 0) newErrors.sellingPrice = "Price cannot be negative";
     if (formData.costPrice < 0) newErrors.costPrice = "Cost cannot be negative";
     if (!formData.supplierId) newErrors.supplierId = "Please select a vendor";
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -74,18 +82,26 @@ export default function ProductForm({ vendors, onSuccess }: ProductFormProps) {
     if (!validateForm()) return;
 
     setLoading(true);
+    
+    const submissionData = {
+      ...formData,
+      supplierId: parseInt(formData.supplierId, 10),
+    };
+
     try {
-      // Convert supplierId to a number before sending
-      const submissionData = {
-        ...formData,
-        supplierId: parseInt(formData.supplierId, 10),
-      };
-      await api.post("/products", submissionData);
-      alert("Product created successfully!");
-      onSuccess(); // Call the callback to close the dialog and refresh
+      if (initialData) {
+        // --- UPDATE method ---
+        await api.patch(`/products/${initialData.id}`, submissionData);
+        alert("Product updated successfully!");
+      } else {
+        // --- (POST) method ---
+        await api.post("/products", submissionData);
+        alert("Product created successfully!");
+      }
+      onSuccess(); // Call the callback to close and refresh
     } catch (error: any) {
-      console.error("Failed to create product:", error);
-      alert(`Error: ${error.response?.data?.message || "Failed to create product."}`);
+      console.error("Failed to save product:", error);
+      alert(`Error: ${error.response?.data?.message || "Failed to save product."}`);
     } finally {
       setLoading(false);
     }
@@ -93,49 +109,36 @@ export default function ProductForm({ vendors, onSuccess }: ProductFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-      {/* Name */}
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input id="name" name="name" value={formData.name} onChange={handleChange} />
         {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
       </div>
-      
-      {/* SKU */}
       <div className="space-y-2">
         <Label htmlFor="sku">SKU</Label>
         <Input id="sku" name="sku" value={formData.sku} onChange={handleChange} />
         {errors.sku && <p className="text-sm text-red-500">{errors.sku}</p>}
       </div>
-
-      {/* Category */}
       <div className="space-y-2">
         <Label htmlFor="category">Category</Label>
         <Input id="category" name="category" value={formData.category} onChange={handleChange} />
         {errors.category && <p className="text-sm text-red-500">{errors.category}</p>}
       </div>
-
-      {/* Stock Quantity */}
       <div className="space-y-2">
         <Label htmlFor="stockQuantity">Stock Quantity</Label>
         <Input id="stockQuantity" name="stockQuantity" type="number" value={formData.stockQuantity} onChange={handleChange} />
         {errors.stockQuantity && <p className="text-sm text-red-500">{errors.stockQuantity}</p>}
       </div>
-
-      {/* Selling Price */}
       <div className="space-y-2">
         <Label htmlFor="sellingPrice">Selling Price</Label>
         <Input id="sellingPrice" name="sellingPrice" type="number" step="0.01" value={formData.sellingPrice} onChange={handleChange} />
         {errors.sellingPrice && <p className="text-sm text-red-500">{errors.sellingPrice}</p>}
       </div>
-
-      {/* Cost Price */}
       <div className="space-y-2">
         <Label htmlFor="costPrice">Cost Price</Label>
         <Input id="costPrice" name="costPrice" type="number" step="0.01" value={formData.costPrice} onChange={handleChange} />
         {errors.costPrice && <p className="text-sm text-red-500">{errors.costPrice}</p>}
       </div>
-      
-      {/* Vendor/Supplier */}
       <div className="col-span-2 space-y-2">
         <Label>Vendor/Supplier</Label>
         <Select onValueChange={handleSelectChange} value={formData.supplierId}>
@@ -154,7 +157,7 @@ export default function ProductForm({ vendors, onSuccess }: ProductFormProps) {
       </div>
       
       <Button type="submit" className="col-span-2" disabled={loading}>
-        {loading ? "Creating..." : "Create Product"}
+        {loading ? "Saving..." : (initialData ? "Save Changes" : "Create Product")}
       </Button>
     </form>
   );
