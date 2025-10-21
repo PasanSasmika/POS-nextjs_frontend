@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingCart, Package, Users, BarChart2, FileText } from "lucide-react";
+import { Home, ShoppingCart, Package, Users, BarChart2, FileText , FileClock, ChartSpline} from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/store/auth";
 
@@ -12,17 +12,17 @@ const navLinks = {
         { href: "/dashboard/sales", label: "Sales", icon: ShoppingCart },
         { href: "/dashboard/inventory", label: "Inventory", icon: Package },
         { href: "/dashboard/customers", label: "Customers", icon: Users },
-        { href: "/dashboard/sales-history", label: "Sales History", icon: FileText },
-        { href: "/dashboard/reports", label: "Reports", icon: BarChart2 },
+        { href: "/dashboard/sales-history", label: "Sales History", icon: FileClock },
+        { href: "/dashboard/reports/sales-summary", label: "Reports", icon: ChartSpline },
         { href: "/dashboard/audit-logs", label: "Audit Logs", icon: FileText },
     ],
     MANAGER: [
         { href: "/dashboard", label: "Dashboard", icon: Home },
         { href: "/dashboard/sales", label: "Sales", icon: ShoppingCart },
         { href: "/dashboard/inventory", label: "Inventory", icon: Package },
-        { href: "/dashboard/sales-history", label: "Sales History", icon: FileText },
+        { href: "/dashboard/sales-history", label: "Sales History", icon: FileClock },
         { href: "/dashboard/customers", label: "Customers", icon: Users },
-        { href: "/dashboard/reports", label: "Reports", icon: BarChart2 },
+        { href: "/dashboard/reports/sales-summary", label: "Reports", icon: ChartSpline },
     ],
     CASHIER: [
         { href: "/dashboard/sales", label: "POS Terminal", icon: ShoppingCart },
