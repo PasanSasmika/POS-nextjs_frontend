@@ -15,6 +15,7 @@ const navLinks = {
         { href: "/dashboard/sales-history", label: "Sales History", icon: FileClock },
         { href: "/dashboard/reports/sales-summary", label: "Reports", icon: ChartSpline },
         { href: "/dashboard/audit-logs", label: "Audit Logs", icon: FileText },
+        { href: "/dashboard/reports/stock-summary", label: "Stock Report", icon: Package },
     ],
     MANAGER: [
         { href: "/dashboard", label: "Dashboard", icon: Home },
