@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingCart, Package, Users, BarChart2, FileText , FileClock, ChartSpline} from "lucide-react";
+import { Home, ShoppingCart, Package, Users, BarChart2, FileText , FileClock, ChartSpline, Layers, Building} from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/store/auth";
 
@@ -15,7 +15,8 @@ const navLinks = {
         { href: "/dashboard/sales-history", label: "Sales History", icon: FileClock },
         { href: "/dashboard/reports/sales-summary", label: "Reports", icon: ChartSpline },
         { href: "/dashboard/audit-logs", label: "Audit Logs", icon: FileText },
-        { href: "/dashboard/reports/stock-summary", label: "Stock Report", icon: Package },
+        { href: "/dashboard/reports/stock-summary", label: "Stock Report", icon: Layers },
+        { href: "/dashboard/vendors", label: "Vendors", icon: Building },
     ],
     MANAGER: [
         { href: "/dashboard", label: "Dashboard", icon: Home },
@@ -24,6 +25,7 @@ const navLinks = {
         { href: "/dashboard/sales-history", label: "Sales History", icon: FileClock },
         { href: "/dashboard/customers", label: "Customers", icon: Users },
         { href: "/dashboard/reports/sales-summary", label: "Reports", icon: ChartSpline },
+        { href: "/dashboard/vendors", label: "Vendors", icon: Building },
     ],
     CASHIER: [
         { href: "/dashboard/sales", label: "POS Terminal", icon: ShoppingCart },
