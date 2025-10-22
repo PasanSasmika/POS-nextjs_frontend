@@ -52,7 +52,7 @@ const navLinks = {
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
   const userRole = (user?.role as keyof typeof navLinks) || "CASHIER";
   const links = navLinks[userRole];
 
@@ -111,23 +111,6 @@ export default function Sidebar() {
             </Link>
           ))}
         </nav>
-
-        {/* Logout */}
-        <div>
-          <button
-            onClick={logout}
-            className="flex items-center gap-3 w-full rounded-lg px-3 py-3 text-gray-700 hover:bg-gray-100 transition-all"
-          >
-            <LogOut className="h-5 w-5" />
-            <span
-              className={`font-medium transition-all duration-300 ${
-                isOpen ? "opacity-100 w-auto" : "opacity-0 w-0"
-              }`}
-            >
-              Logout
-            </span>
-          </button>
-        </div>
       </div>
     </aside>
   );

@@ -1,18 +1,24 @@
-"use client"; // Required for HOCs
+"use client";
 
 import React from 'react';
 import Sidebar from '@/components/shared/Sidebar';
-import withAuth from '@/components/shared/withAuth'; 
+import Header from '@/components/shared/Header'; // <-- Import Header
+import withAuth from '@/components/shared/withAuth';
 
 function DashboardLayout({ children }: { children: React.ReactNode; }) {
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden"> {/* Added overflow-hidden */}
       <Sidebar />
-      <main className="flex-1 overflow-y-auto p-8">
-        {children}
-      </main>
+      {/* --- Main Content Area with Header --- */}
+      <div className="flex flex-col flex-1 overflow-hidden"> {/* Added flex-col & overflow */}
+          <Header /> {/* <-- Add Header */}
+          <main className="flex-1 overflow-y-auto p-4 md:p-8"> {/* Adjusted padding */}
+            {children}
+          </main>
+      </div>
+      {/* -------------------------------------- */}
     </div>
   );
 }
 
-export default withAuth(DashboardLayout); // Wrap the layout with the HOC
+export default withAuth(DashboardLayout);

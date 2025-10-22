@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Form,FormControl,FormField,FormItem,FormLabel,FormMessage,} from "@/components/ui/form";
+import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage,} from "@/components/ui/form";
 import {Card,CardContent,CardDescription,CardHeader,CardTitle,} from "@/components/ui/card";
 import api from "@/lib/api";
 import { useAuthStore } from "@/store/auth";
@@ -31,19 +30,28 @@ export default function LoginPage() {
     },
   });
 
- const { setAuth } = useAuthStore(); // Get the setAuth action
+ const { setAuth } = useAuthStore(); 
 
 async function onSubmit(values: z.infer<typeof formSchema>) {
   setError(null);
   try {
     const response = await api.post('/auth/login', values);
-
     const { access_token } = response.data;
-    const decodedUser = jwtDecode(access_token); 
 
-    setAuth(access_token, decodedUser); 
+    const decodedUser = jwtDecode<{ sub: number; username: string; role: string }>(access_token); 
 
-    router.push('/dashboard'); 
+    setAuth(access_token, decodedUser);
+
+    let redirectPath = '/dashboard';
+
+    if (decodedUser.role === 'CASHIER') {
+      redirectPath = '/dashboard/sales'; 
+    } else if (decodedUser.role === 'STOCK') {
+      redirectPath = '/dashboard/inventory'; 
+    }
+
+    router.push(redirectPath);
+
   } catch (err: any) {
     console.error("Login failed:", err);
     setError("Invalid username or password. Please try again.");
