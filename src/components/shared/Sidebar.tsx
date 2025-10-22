@@ -17,6 +17,7 @@ const navLinks = {
         { href: "/dashboard/audit-logs", label: "Audit Logs", icon: FileText },
         { href: "/dashboard/reports/stock-summary", label: "Stock Report", icon: Layers },
         { href: "/dashboard/vendors", label: "Vendors", icon: Building },
+        { href: "/dashboard/users", label: "Users", icon: Users },
     ],
     MANAGER: [
         { href: "/dashboard", label: "Dashboard", icon: Home },
