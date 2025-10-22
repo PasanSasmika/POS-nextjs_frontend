@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingCart, Package, Users, BarChart2, FileText , FileClock, ChartSpline, Layers, Building} from "lucide-react";
+import { Home, ShoppingCart, Package, Users, BarChart2, FileText , FileClock, ChartSpline, Layers, Building, Store} from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/store/auth";
 
@@ -18,6 +18,8 @@ const navLinks = {
         { href: "/dashboard/reports/stock-summary", label: "Stock Report", icon: Layers },
         { href: "/dashboard/vendors", label: "Vendors", icon: Building },
         { href: "/dashboard/users", label: "Users", icon: Users },
+        { href: "/dashboard/stores", label: "Stores", icon: Store },
+
     ],
     MANAGER: [
         { href: "/dashboard", label: "Dashboard", icon: Home },
