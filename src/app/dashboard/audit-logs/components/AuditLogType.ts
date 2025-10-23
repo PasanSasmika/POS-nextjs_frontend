@@ -4,7 +4,7 @@ export type AuditLog = {
   action: string;
   entity: string;
   entityId: number;
-  details: any; 
+  details: unknown; 
   createdAt: string;
   user: { 
     username: string;

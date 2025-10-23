@@ -96,13 +96,15 @@ export default function StoresPage() {
       await api.delete(`/stores/${storeToDelete.id}`); 
       alert("Store deleted successfully");
       fetchStores(); 
-    } catch (error: any) {
-      console.error("Failed to delete store:", error);
-      if (error.response?.status === 409 || error.response?.status === 400 ) { 
-          alert(error.response.data.message || "Cannot delete store: It might be linked to users or sales.");
-      } else {
-          alert("Failed to delete store. Please check console.");
-      }
+    } catch (error) { // Remove ': any'
+    console.error("Failed to delete store:", error);
+    const axiosError = error as import('axios').AxiosError; // Type assertion
+    // Check for specific backend constraint error (409 Conflict or maybe 400 Bad Request depending on backend)
+    if (axiosError.response?.status === 409 || axiosError.response?.status === 400) {
+        alert((axiosError.response?.data as { message?: string })?.message || "Cannot delete store: It might be linked to other records.");
+    } else {
+        alert("Failed to delete store. Please check console.");
+    }
     } finally {
       setIsDeleteAlertOpen(false); 
       setStoreToDelete(null); 

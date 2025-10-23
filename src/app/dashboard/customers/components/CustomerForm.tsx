@@ -54,9 +54,10 @@ export default function CustomerForm({ onSuccess, initialData }: CustomerFormPro
         alert("Customer created successfully!");
       }
       onSuccess(); // Close dialog and refresh table
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to save customer:", error);
-      alert(`Error: ${error.response?.data?.message || "Failed to save customer."}`);
+      const axiosError = error as import('axios').AxiosError;
+      alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save customer."}`);
     }
   };
 

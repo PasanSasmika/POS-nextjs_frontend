@@ -64,9 +64,10 @@ export default function StoreForm({ onSuccess, initialData }: StoreFormProps) {
         alert("Store created successfully!");
       }
       onSuccess(); 
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to save store:", error);
-      alert(`Error: ${error.response?.data?.message || "Failed to save store."}`);
+    const axiosError = error as import('axios').AxiosError;
+    alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save store."}`);
     }
   };
 

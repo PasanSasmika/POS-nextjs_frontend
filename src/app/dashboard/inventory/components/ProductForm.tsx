@@ -99,9 +99,10 @@ export default function ProductForm({ vendors, onSuccess, initialData }: Product
         alert("Product created successfully!");
       }
       onSuccess(); // Call the callback to close and refresh
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to save product:", error);
-      alert(`Error: ${error.response?.data?.message || "Failed to save product."}`);
+    const axiosError = error as import('axios').AxiosError;
+    alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save product."}`);
     } finally {
       setLoading(false);
     }

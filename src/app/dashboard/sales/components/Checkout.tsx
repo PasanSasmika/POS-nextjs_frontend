@@ -66,9 +66,10 @@ export default function Checkout() {
       alert("Sale Completed Successfully!");
       clearCart();
       setSelectedCustomer(null);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to create sale:", error);
-      alert(`Sale failed: ${error.response?.data?.message || "Check console."}`);
+    const axiosError = error as import('axios').AxiosError;
+    alert(`Sale failed: ${(axiosError.response?.data as { message?: string })?.message || "Check console."}`);
     } finally {
       setLoading(false);
     }

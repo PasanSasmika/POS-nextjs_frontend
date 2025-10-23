@@ -62,15 +62,15 @@ export default function VendorsPage() {
       await api.delete(`/vendors/${vendorToDelete.id}`);
       alert("Vendor deleted successfully");
       fetchVendors();
-    } catch (error: any) {
-      console.error("Failed to delete vendor:", error);
-      // Check if it's a constraint violation (vendor linked to products)
-      if (error.response?.status === 400 && error.response?.data?.message?.includes('foreign key constraint fails')) {
-         alert("Cannot delete vendor: They are linked to existing products.");
-      } else {
-         alert("Failed to delete vendor.");
-      }
-    } finally {
+    } catch (error) { 
+    console.error("Failed to delete vendor:", error);
+    const axiosError = error as import('axios').AxiosError;
+    if (axiosError.response?.status === 409 || axiosError.response?.status === 400 ) {
+       alert((axiosError.response?.data as { message?: string })?.message || "Cannot delete vendor: They might be linked to existing products.");
+    } else {
+       alert("Failed to delete vendor.");
+    }
+  }finally {
       setIsDeleteAlertOpen(false);
       setVendorToDelete(null);
     }

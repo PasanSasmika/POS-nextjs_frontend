@@ -67,9 +67,10 @@ export default function VendorForm({ onSuccess, initialData }: VendorFormProps) 
         alert("Vendor created successfully!");
       }
       onSuccess();
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to save vendor:", error);
-      alert(`Error: ${error.response?.data?.message || "Failed to save vendor."}`);
+    const axiosError = error as import('axios').AxiosError;
+    alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save vendor."}`);
     }
   };
 

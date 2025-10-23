@@ -63,9 +63,10 @@ export default function SalesHistoryPage() {
       await api.post(`/sales/${saleToRefund.id}/refund`);
       alert("Sale refunded successfully!");
       fetchSales(); // Refresh the sales list
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to process refund:", error);
-      alert(`Refund failed: ${error.response?.data?.message || "Error"}`);
+      const axiosError = error as import('axios').AxiosError;
+      alert(`Refund failed: ${(axiosError.response?.data as { message?: string })?.message || "Check console."}`);
     } finally {
       setIsRefundAlertOpen(false);
       setSaleToRefund(null);
