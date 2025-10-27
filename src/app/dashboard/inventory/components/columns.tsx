@@ -11,10 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// Import the shared type
 import { Product } from "./ProductType";
 
-// Define the props for the function
 interface ProductColumnsProps {
   onEdit: (product: Product) => void;
   onDelete: (product: Product) => void;

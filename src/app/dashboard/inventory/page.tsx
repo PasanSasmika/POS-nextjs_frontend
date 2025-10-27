@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { getColumns } from "./components/columns"; // <-- Import the function
+import { getColumns } from "./components/columns"; 
 import { DataTable } from "@/components/shared/DataTable";
 import api from "@/lib/api";
 import { Button } from "@/components/ui/button";

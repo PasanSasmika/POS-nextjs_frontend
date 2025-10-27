@@ -45,7 +45,6 @@ export default function AuditLogsPage() {
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Audit Log</h1>
-        {/* Add filtering options here later if needed */}
       </div>
 
       <DataTable columns={memoizedColumns} data={logs} />

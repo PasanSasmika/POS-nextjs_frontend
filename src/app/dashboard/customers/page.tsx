@@ -89,8 +89,7 @@ export default function CustomersPage() {
   const columns = useMemo(() => getColumns({
     onEdit: handleEditClick,
     onDelete: handleDeleteClick,
-  }), [customers]); // Re-memoize if customers data changes, passing handlers
-
+  }), [customers]); 
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -100,10 +99,8 @@ export default function CustomersPage() {
         <Button onClick={handleAddNewClick}>Add New Customer</Button>
       </div>
 
-      {/* Customer Table */}
       <DataTable columns={columns} data={customers} />
 
-      {/* Add/Edit Customer Dialog */}
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>

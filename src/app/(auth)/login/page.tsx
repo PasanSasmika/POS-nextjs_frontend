@@ -33,7 +33,6 @@ export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize React Hook Form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,45 +41,37 @@ export default function LoginPage() {
     },
   });
 
-  // Get the setAuth action from the Zustand store
   const { setAuth } = useAuthStore();
 
-  /**
-   * Handles form submission: calls login API, decodes token, updates state, redirects.
-   */
+  
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setError(null); // Clear previous errors
+    setError(null);
     try {
       console.log("Submitting login:", values.username);
-      // Call the backend login endpoint
       const response = await api.post('/auth/login', values);
-      const { access_token } = response.data; // Assuming backend returns { access_token: "..." }
+      const { access_token } = response.data;
 
       if (!access_token) {
           throw new Error("Access token not received from server.");
       }
 
-      // Decode the JWT payload, providing the expected type structure
       const decodedUser = jwtDecode<BackendJwtPayload>(access_token);
       console.log("Decoded JWT payload:", decodedUser);
 
-      // Call the Zustand store action to save token and mapped user data
-      setAuth(access_token, decodedUser); // Pass the raw decoded payload
+      setAuth(access_token, decodedUser); 
 
-      // Determine redirect path based on user role
-      let redirectPath = '/dashboard'; // Default for Admin/Manager
+      let redirectPath = '/dashboard'; 
       if (decodedUser.role === 'CASHIER') {
         redirectPath = '/dashboard/sales';
       } else if (decodedUser.role === 'STOCK') {
         redirectPath = '/dashboard/inventory';
       }
       console.log(`Login successful. Redirecting to ${redirectPath}`);
-      router.push(redirectPath); // Navigate to the appropriate page
+      router.push(redirectPath); 
 
-    } catch (err) { // Catch block with better error handling
+    } catch (err) { 
       console.error("Login failed:", err);
-      const axiosError = err as import('axios').AxiosError<{ message?: string }>; // Type Axios error
-      // Set error message based on backend response or fallback
+      const axiosError = err as import('axios').AxiosError<{ message?: string }>; 
       setError(
           axiosError.response?.data?.message ||
           "Invalid username or password. Please try again."
