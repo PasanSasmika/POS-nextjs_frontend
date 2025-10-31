@@ -17,6 +17,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  PackagePlus,
+  BookmarkX,
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
 
@@ -33,6 +35,8 @@ const navLinks = {
     { href: "/dashboard/vendors", label: "Vendors", icon: Building },
     { href: "/dashboard/users", label: "Users", icon: Users },
     { href: "/dashboard/stores", label: "Stores", icon: Store },
+    { href: "/dashboard/inventory/stock-log", label: "Stock Log", icon: BookmarkX },
+
   ],
   MANAGER: [
     { href: "/dashboard", label: "Dashboard", icon: Home },
@@ -42,12 +46,17 @@ const navLinks = {
     { href: "/dashboard/customers", label: "Customers", icon: Users },
     { href: "/dashboard/reports/sales-summary", label: "Reports", icon: ChartSpline },
     { href: "/dashboard/vendors", label: "Vendors", icon: Building },
+    { href: "/dashboard/inventory/stock-log", label: "Stock Log", icon: BookmarkX },
+
+    
   ],
   CASHIER: [
     { href: "/dashboard/sales", label: "POS Terminal", icon: ShoppingCart },
     { href: "/dashboard/customers", label: "Customers", icon: Users },
   ],
-  STOCK: [{ href: "/dashboard/inventory", label: "Inventory", icon: Package }],
+  STOCK: [{ href: "/dashboard/inventory", label: "Inventory", icon: Package },
+    { href: "/dashboard/inventory/receive-stock", label: "Receive Stock", icon: PackagePlus }, 
+  ],
 };
 
 export default function Sidebar() {

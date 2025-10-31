@@ -19,6 +19,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Product } from "./components/ProductType";
+import Link from "next/link";
 
 
 type Vendor = {
@@ -115,7 +116,15 @@ export default function InventoryPage() {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Inventory</h1>
         <Button onClick={handleAddNewClick}>Add New Product</Button>
+    <div>
+       <Link href="/dashboard/inventory/receive-stock">
+  <Button variant="outline">Receive Stock</Button>
+</Link>
+    </div>
+       
       </div>
+
+      
       
       {/* Product Table */}
       <DataTable columns={columns} data={products} />
