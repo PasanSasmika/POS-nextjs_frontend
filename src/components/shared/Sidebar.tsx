@@ -14,7 +14,6 @@ import {
   Layers,
   Building,
   Store,
-  LogOut,
   ChevronLeft,
   ChevronRight,
   PackagePlus,
@@ -98,8 +97,8 @@ export default function Sidebar() {
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex flex-col gap-2 flex-1">
-          {links.map((link) => (
+     <nav className="flex flex-col gap-2 flex-1 overflow-y-auto">
+            {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
