@@ -12,7 +12,6 @@ interface FormData {
   name: string;
   sku: string;
   category: string;
-  stockQuantity: number;
   sellingPrice: number;
   costPrice: number;
   supplierId: string;
@@ -29,7 +28,6 @@ export default function ProductForm({ vendors, onSuccess, initialData }: Product
     name: "",
     sku: "",
     category: "",
-    stockQuantity: 0,
     sellingPrice: 0,
     costPrice: 0,
     supplierId: "",
@@ -44,7 +42,6 @@ export default function ProductForm({ vendors, onSuccess, initialData }: Product
         name: initialData.name,
         sku: initialData.sku,
         category: initialData.category,
-        stockQuantity: initialData.stockQuantity,
         sellingPrice: initialData.sellingPrice,
         costPrice: initialData.costPrice,
         supplierId: String(initialData.supplierId),
@@ -69,7 +66,6 @@ export default function ProductForm({ vendors, onSuccess, initialData }: Product
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.sku) newErrors.sku = "SKU is required";
     if (!formData.category) newErrors.category = "Category is required";
-    if (formData.stockQuantity < 0) newErrors.stockQuantity = "Stock cannot be negative";
     if (formData.sellingPrice < 0) newErrors.sellingPrice = "Price cannot be negative";
     if (formData.costPrice < 0) newErrors.costPrice = "Cost cannot be negative";
     if (!formData.supplierId) newErrors.supplierId = "Please select a vendor";
@@ -124,11 +120,6 @@ export default function ProductForm({ vendors, onSuccess, initialData }: Product
         <Label htmlFor="category">Category</Label>
         <Input id="category" name="category" value={formData.category} onChange={handleChange} />
         {errors.category && <p className="text-sm text-red-500">{errors.category}</p>}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="stockQuantity">Stock Quantity</Label>
-        <Input id="stockQuantity" name="stockQuantity" type="number" value={formData.stockQuantity} onChange={handleChange} />
-        {errors.stockQuantity && <p className="text-sm text-red-500">{errors.stockQuantity}</p>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="sellingPrice">Selling Price</Label>
