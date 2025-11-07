@@ -13,6 +13,7 @@ import { useCartStore } from "@/store/cart";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import QuickAddCustomerForm from "./QuickAddCustomerForm"; 
 import { AxiosError } from "axios"; 
+import { useSalesTerminalStore } from "@/store/salesTerminal";
 
 enum PaymentMethod {
   Cash = "Cash",
@@ -23,8 +24,7 @@ enum PaymentMethod {
 
 export default function Checkout() {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
-
+const { selectedCustomer, setSelectedCustomer } = useSalesTerminalStore();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.Cash);
   const [openCustomerSearch, setOpenCustomerSearch] = useState(false);
   const [customerSearchQuery, setCustomerSearchQuery] = useState("");

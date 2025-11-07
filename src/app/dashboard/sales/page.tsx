@@ -1,5 +1,6 @@
 "use client";
 
+import AiRecommendationBox from "./components/AiRecommendationBox";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import ProductLookup from "./components/ProductLookup";
@@ -15,6 +16,7 @@ export default function SalesPage() {
         
         {/* Cart Component */}
         <Cart />
+        <AiRecommendationBox />
       </div>
 
       {/* Right Column (Checkout) */}
