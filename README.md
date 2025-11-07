@@ -1,3 +1,5 @@
+<img width="1280" height="720" alt="POS System (3)" src="https://github.com/user-attachments/assets/fddf3c24-907b-4422-ae1d-6cf456d731ef" />
+<img width="1918" height="867" alt="Screenshot 2025-11-07 083449" src="https://github.com/user-attachments/assets/59c38f28-e8eb-47b3-b2a6-c6667578d329" />
 <img width="1918" height="866" alt="Screenshot 2025-10-24 121839" src="https://github.com/user-attachments/assets/a823857e-7e3f-48ff-92f3-62af360a763b" />
 <img width="1906" height="878" alt="Screenshot 2025-10-24 121947" src="https://github.com/user-attachments/assets/089cf21e-b8a6-46ea-a1d5-046f8e1454e0" />
 <img width="1918" height="857" alt="Screenshot 2025-10-24 122046" src="https://github.com/user-attachments/assets/120311c3-d8a5-49db-a63f-aa348c280c3f" />
