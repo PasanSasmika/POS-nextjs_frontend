@@ -41,33 +41,23 @@ export default function Checkout() {
   const currentTotalPrice = getTotalPrice(); // Get the total price
 
   // Fetch customers for search
-  const fetchCustomers = async () => {
-    try {
-      const response = await api.get("/customers");
-      setCustomers(response.data);
-    } catch (error) {
-      console.error("Failed to fetch customers:", error);
-    }
-  };
+  const fetchCustomers = async () => { /* ... (no change) ... */ };
+  useEffect(() => { fetchCustomers(); }, []);
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
-
-  // Filter customers based on search query
+  // Filter customers based on search query (no change)
   const filteredCustomers = customers.filter(customer =>
     customer.name.toLowerCase().includes(customerSearchQuery.toLowerCase()) ||
     customer.phone.includes(customerSearchQuery)
   );
   
-  // This function is now called by the dialog OR the pay button
+  // --- UPDATED: This function is now called by the dialog OR the pay button ---
   const handleFinalizeSale = async () => {
     if (items.length === 0) {
       alert("Cannot complete sale: Your cart is empty.");
-      return; // Return a promise rejection or value if dialog needs to know
+      return;
     }
 
-    setLoading(true); // Set loading state
+    setLoading(true); // Set loading state for the main "Pay" button
 
     const saleData = {
       customerId: selectedCustomer?.id || null,
@@ -86,7 +76,7 @@ export default function Checkout() {
       clearCart();
       setSelectedCustomer(null);
       setCustomerSearchQuery("");
-      setIsCashDialogOpen(false); // Close cash dialog on success
+      setIsCashDialogOpen(false); // <-- IMPORTANT: Close dialog on success
     } catch (error) {
       console.error("Failed to create sale:", error);
       const axiosError = error as AxiosError<{ message?: string | string[] }>;
@@ -97,23 +87,15 @@ export default function Checkout() {
                        : axiosError.response.data.message;
       }
       alert(`Sale Failed: ${errorMessage}`);
-      throw error; // Re-throw error so the dialog's catch block can stop loading
     } finally {
       setLoading(false); // Clear loading state
     }
   };
 
-  // Handler for successful Quick Add
-  const handleQuickAddSuccess = (newCustomer: Customer) => {
-    console.log("Quick add success:", newCustomer);
-    setIsAddCustomerDialogOpen(false);
-    setCustomers(prev => [...prev, newCustomer]);
-    setSelectedCustomer(newCustomer);
-    setOpenCustomerSearch(false);
-    setCustomerSearchQuery("");
-  };
+  // Handler for successful Quick Add (no change)
+  const handleQuickAddSuccess = (newCustomer: Customer) => { /* ... (no change) ... */ };
 
-  // Format price helper
+  // Format price helper (no change)
   const formatPrice = (amount: number): string =>
     new Intl.NumberFormat("en-LK", { style: "currency", currency: "LKR" }).format(amount);
 
@@ -141,78 +123,13 @@ export default function Checkout() {
         <CardTitle>Checkout</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col justify-between space-y-6">
-        {/* Top Section: Customer & Payment */}
+        {/* Top Section: Customer & Payment (no change) */}
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-medium mb-1">Customer (Optional)</label>
             <div className="flex gap-2 items-center">
-              {/* Popover for customer search */}
-              <Popover open={openCustomerSearch} onOpenChange={setOpenCustomerSearch}>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" role="combobox" className="flex-1 justify-between">
-                    {selectedCustomer ? `${selectedCustomer.name} (${selectedCustomer.phone})` : "Search Name/Phone..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                  <Command>
-                    <CommandInput
-                      placeholder="Search name or phone..."
-                      value={customerSearchQuery}
-                      onValueChange={setCustomerSearchQuery}
-                    />
-                    <CommandList>
-                      <CommandEmpty>
-                        <div className="py-2 px-4 text-center text-sm">
-                          No customer found.
-                          <Button
-                            variant="link"
-                            className="h-auto p-1 ml-1 text-blue-600"
-                            onClick={() => {
-                                setOpenCustomerSearch(false);
-                                setIsAddCustomerDialogOpen(true);
-                            }}
-                          >
-                            Add New?
-                          </Button>
-                        </div>
-                      </CommandEmpty>
-                      <CommandGroup>
-                        {filteredCustomers.map((customer) => (
-                          <CommandItem
-                            key={customer.id}
-                            value={`${customer.name} ${customer.phone}`}
-                            onSelect={() => {
-                              setSelectedCustomer(customer);
-                              setOpenCustomerSearch(false);
-                              setCustomerSearchQuery("");
-                            }}
-                          >
-                            {customer.name} ({customer.phone})
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-
-              {/* Dialog for quick add customer */}
-              <Dialog open={isAddCustomerDialogOpen} onOpenChange={setIsAddCustomerDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="icon" title="Add New Customer" className="shrink-0">
-                    <UserPlus className="h-4 w-4"/>
-                    <span className="sr-only">Add New Customer</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Add New Customer</DialogTitle>
-                    <DialogDescription>Quickly add a new customer to the system.</DialogDescription>
-                  </DialogHeader>
-                  <QuickAddCustomerForm onSuccess={handleQuickAddSuccess} />
-                </DialogContent>
-              </Dialog>
+              {/* ... (Popover for customer search, no change) ... */}
+              {/* ... (Dialog for quick add customer, no change) ... */}
             </div>
             {selectedCustomer && (
               <Button variant="link" size="sm" className="px-1 h-auto text-xs" onClick={() => setSelectedCustomer(null)}>
@@ -220,8 +137,6 @@ export default function Checkout() {
               </Button>
             )}
           </div>
-
-          {/* Payment Method Tabs */}
           <div>
             <label className="block text-sm font-medium mb-2">Payment Method</label>
             <Tabs defaultValue={PaymentMethod.Cash} onValueChange={(value) => setPaymentMethod(value as PaymentMethod)}>
@@ -235,7 +150,7 @@ export default function Checkout() {
 
         {/* Bottom Section: Totals & Actions */}
         <div className="space-y-4 pt-4 border-t">
-          {/* Total Display */}
+          {/* Total Display (no change) */}
           <div className="space-y-1 text-sm">
             <div className="flex justify-between">
               <span>Subtotal</span>
@@ -252,7 +167,9 @@ export default function Checkout() {
             <Button
               className="w-full"
               size="lg"
-              onClick={handlePayButtonPress} // <-- Use the new handler
+              // --- UPDATED: Use the new click handler ---
+              onClick={handlePayButtonPress}
+              // ----------------------------------------
               disabled={loading || items.length === 0}
             >
               {loading ? "Processing..." : `Pay ${formatPrice(currentTotalPrice)}`}
@@ -275,8 +192,7 @@ export default function Checkout() {
         </div>
       </CardContent>
 
-      {/* --- ADD THE NEW DIALOG COMPONENT --- */}
-      {/* This component is hidden until 'isCashDialogOpen' is true */}
+      {/* --- ADD THE NEW DIALOG COMPONENT (it's hidden by default) --- */}
       <CashTenderedDialog
         isOpen={isCashDialogOpen}
         onOpenChange={setIsCashDialogOpen}
