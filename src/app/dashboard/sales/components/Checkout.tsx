@@ -15,7 +15,7 @@ import QuickAddCustomerForm from "./QuickAddCustomerForm";
 import { AxiosError } from "axios";
 import { useSalesTerminalStore } from "@/store/salesTerminal";
 import CashTenderedDialog from "./CashTenderedDialog";
-import { CompletedSale } from "./Receipt"; 
+import { CompletedSale } from "./Receipt";
 
 enum PaymentMethod {
   Cash = "Cash",
@@ -28,7 +28,7 @@ interface CheckoutProps {
   onSaleComplete: (saleData: CompletedSale) => void;
 }
 
-export default function Checkout({ onSaleComplete }: CheckoutProps) { 
+export default function Checkout({ onSaleComplete }: CheckoutProps) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const { selectedCustomer, setSelectedCustomer } = useSalesTerminalStore();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.Cash);
@@ -36,6 +36,7 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
   const [customerSearchQuery, setCustomerSearchQuery] = useState("");
   const [isAddCustomerDialogOpen, setIsAddCustomerDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  
   const [isCashDialogOpen, setIsCashDialogOpen] = useState(false);
 
   const { items, clearCart, getTotalPrice } = useCartStore();
@@ -79,8 +80,9 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
     try {
       const response = await api.post("/sales", saleData);
       
-    
+   
       const backendSaleData = response.data;
+      
       const completedSale: CompletedSale = {
         ...backendSaleData, 
         items: items,      
@@ -104,7 +106,7 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
                        : axiosError.response.data.message;
       }
       alert(`Sale Failed: ${errorMessage}`);
-      throw error; 
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -269,7 +271,7 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
         isOpen={isCashDialogOpen}
         onOpenChange={setIsCashDialogOpen}
         totalPrice={currentTotalPrice}
-        onConfirmSale={handleFinalizeSale}
+        onConfirmSale={handleFinalizeSale} 
       />
     </>
   );
