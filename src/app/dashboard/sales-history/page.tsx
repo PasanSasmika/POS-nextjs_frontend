@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { getColumns } from "./components/columns";
 import { Sale } from "./components/SaleType";
 import { DataTable } from "@/components/shared/DataTable";
@@ -15,9 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
-// We'll need a Dialog to show sale details, but we'll add it later.
-// For now, the handler will just log to the console.
+import SaleDetailsDialog from "./components/SaleDetailsDialog"; // <-- IMPORT THE NEW DIALOG
 
 export default function SalesHistoryPage() {
   const [sales, setSales] = useState<Sale[]>([]);
@@ -27,6 +25,10 @@ export default function SalesHistoryPage() {
   const [isRefundAlertOpen, setIsRefundAlertOpen] = useState(false);
   const [saleToRefund, setSaleToRefund] = useState<Sale | null>(null);
 
+  // --- State for Details Dialog ---
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [selectedSaleId, setSelectedSaleId] = useState<number | null>(null);
+  
   const fetchSales = async () => {
     try {
       setLoading(true);
@@ -43,24 +45,32 @@ export default function SalesHistoryPage() {
     fetchSales();
   }, []);
 
-  // --- Event Handlers ---
+  // --- Event Handlers (wrapped in useCallback for stability) ---
 
-  const handleViewDetails = (saleId: number) => {
+  const handleViewDetails = useCallback((saleId: number) => {
     console.log("View details for sale:", saleId);
-    // TODO: We will build a pop-up dialog for this later.
-    alert("Viewing details for sale ID: " + saleId);
-  };
+    setSelectedSaleId(saleId);
+    setIsDetailsOpen(true);
+  }, []); // Empty dependency array, this function is stable
 
-  const handleRefundClick = (sale: Sale) => {
+  const handleRefundClick = useCallback((sale: Sale) => {
     setSaleToRefund(sale);
     setIsRefundAlertOpen(true);
-  };
+  }, []); // Empty dependency array, this function is stable
 
-  const confirmRefund = async () => {
+  const confirmRefund = useCallback(async () => {
     if (!saleToRefund) return;
     try {
       // Use the refund endpoint you built in the backend
+      // We assume your backend endpoint is POST /sales/:id/refund
+      // And that it needs the userId, which we can get from the auth store
+      // But for simplicity, let's assume the backend already has it from the token
+      
+      // We need to pass the userId to the refund endpoint
+      // Let's modify this slightly - assuming your endpoint needs it
+      // If your backend /refund endpoint gets user from token, this is fine:
       await api.post(`/sales/${saleToRefund.id}/refund`);
+
       alert("Sale refunded successfully!");
       fetchSales(); // Refresh the sales list
     } catch (error) {
@@ -71,13 +81,13 @@ export default function SalesHistoryPage() {
       setIsRefundAlertOpen(false);
       setSaleToRefund(null);
     }
-  };
+  }, [saleToRefund, fetchSales]); // Add fetchSales dependency
 
   // Memoize columns
   const columns = useMemo(() => getColumns({
     onViewDetails: handleViewDetails,
     onRefund: handleRefundClick,
-  }), [sales]);
+  }), [handleViewDetails, handleRefundClick]); // Use stable handlers as dependencies
 
   if (loading) return <div>Loading...</div>;
 
@@ -108,6 +118,13 @@ export default function SalesHistoryPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      
+      {/* --- Add the Details Dialog --- */}
+      <SaleDetailsDialog
+        isOpen={isDetailsOpen}
+        onOpenChange={setIsDetailsOpen}
+        saleId={selectedSaleId}
+      />
     </div>
   );
 }
