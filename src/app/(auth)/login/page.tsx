@@ -12,6 +12,7 @@ import {Card,CardContent,CardDescription,CardHeader,CardTitle,} from "@/componen
 import api from "@/lib/api";
 import { useAuthStore } from "@/store/auth"; 
 import { jwtDecode } from 'jwt-decode'; 
+import { Lock } from "lucide-react";
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Username is required." }),
@@ -84,9 +85,12 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your username below to login to your account.
+           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
+        <Lock className="h-8 w-8 text-black" />
+      </div>
+          <CardTitle className="text-2xl text-center">System Locked</CardTitle>
+          <CardDescription className="text-center">
+            Please login to your account to continue using POS
           </CardDescription>
         </CardHeader>
         <CardContent>

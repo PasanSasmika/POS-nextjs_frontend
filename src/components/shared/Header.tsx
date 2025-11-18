@@ -136,14 +136,7 @@ export default function Header() {
                             </p>
                         </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                       <Link href="/dashboard/profile/change-password">
-                           <KeyRound className="mr-2 h-4 w-4" />
-                           <span>Change Password</span>
-                       </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
+                
                     <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:bg-red-50 focus:text-red-600">
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Log out</span>

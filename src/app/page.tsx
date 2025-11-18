@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Store, LogIn } from "lucide-react"; 
+import { Store, LogIn, ChevronRight } from "lucide-react"; 
 import Link from "next/link"; 
 export default function Home() {
   return (
@@ -38,7 +38,7 @@ export default function Home() {
           
           <Button asChild className="w-full" size="lg">
             <Link href="/login">
-              <LogIn className="mr-2 h-4 w-4" />
+              <ChevronRight className="mr-2 h-4 w-4"/>
               Sign In
             </Link>
           </Button>
