@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 // Zod schema
 const userFormSchema = z.object({
@@ -76,7 +77,7 @@ export default function UserForm({ stores, onSuccess, initialData }: UserFormPro
     // Manual Password Check for Create
     if (!initialData && !values.password) {
       form.setError("password", { type: "manual", message: "Password is required for new users." });
-      setAlertMessage({ type: 'error', message: 'Password is required for new users.' });
+      toast.error("Password is required for new users")
       return;
     }
 
@@ -106,7 +107,7 @@ export default function UserForm({ stores, onSuccess, initialData }: UserFormPro
       if (initialData) {
         console.log("Submitting PATCH /users/:id", apiPayload);
         await api.patch(`/users/${initialData.id}`, apiPayload);
-        setAlertMessage({ type: 'success', message: 'User updated successfully!' });
+        toast.success("User updated successfully!")
       } else {
         // Defensive check: ensure password is included for creation if somehow missed earlier
         if (!apiPayload.password) {
@@ -114,7 +115,8 @@ export default function UserForm({ stores, onSuccess, initialData }: UserFormPro
         }
         console.log("Submitting POST /users", apiPayload);
         await api.post("/users", apiPayload);
-        setAlertMessage({ type: 'success', message: 'User created successfully!' });
+        // setAlertMessage({ type: 'success', message: 'User created successfully!' });
+        toast.success("User created successfully!")
       }
       setTimeout(onSuccess, 1500);
     } catch (error) {

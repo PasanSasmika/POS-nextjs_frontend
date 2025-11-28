@@ -13,6 +13,7 @@ import api from "@/lib/api";
 import { useAuthStore } from "@/store/auth"; 
 import { jwtDecode } from 'jwt-decode'; 
 import { Lock } from "lucide-react";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Username is required." }),
@@ -68,6 +69,7 @@ export default function LoginPage() {
         redirectPath = '/dashboard/inventory';
       }
       console.log(`Login successful. Redirecting to ${redirectPath}`);
+      toast.success("Login Successfully")
       router.push(redirectPath); 
 
     } catch (err) { 

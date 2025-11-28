@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/store/auth';
 import { useRouter } from 'next/navigation';
 import { Role } from '@/app/dashboard/users/components/UserType'; // Assuming this import is correct as per your hint
+import { toast } from 'react-toastify';
 
 type LowStockItem = {
     id: number;
@@ -62,6 +63,7 @@ export default function Header() {
 
     const handleLogout = () => {
         logout();
+        toast.success("You have successfully logged out!")
         router.push('/login');
     };
 

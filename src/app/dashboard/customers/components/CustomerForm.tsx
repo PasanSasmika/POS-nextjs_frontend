@@ -93,7 +93,7 @@ export default function CustomerForm({ onSuccess, initialData }: CustomerFormPro
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email (Optional)</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl><Input placeholder="john@example.com" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
