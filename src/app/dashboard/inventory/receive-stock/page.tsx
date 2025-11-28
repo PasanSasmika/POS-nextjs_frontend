@@ -17,6 +17,7 @@ import { AxiosError } from "axios";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 import { Vendor } from "../../vendors/components/VenderType";
+import { toast } from "react-toastify";
 
 // Define the shape of an item in our local receiving list
 interface ReceivingItem extends Product {
@@ -141,12 +142,12 @@ export default function ReceiveStockPage() {
 
     try {
       await api.post("/products/receive-stock", payload);
-      setAlert({ type: "success", message: "Stock received and updated successfully!" });
-      // Clear the form on success
-      setReceivingList([]);
-      setSelectedVendorId("none");
+  toast.success("Stock received and updated successfully!");
+  setReceivingList([]);
+  setSelectedVendorId("none");
     } catch (error) {
       console.error("Failed to receive stock:", error);
+      toast.error("Failed to receive stock.");
       const axiosError = error as AxiosError<{ message?: string | string[] }>;
       const message = Array.isArray(axiosError.response?.data?.message)
         ? axiosError.response.data.message.join(', ')

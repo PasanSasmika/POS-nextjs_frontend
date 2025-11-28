@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useAuthStore } from "@/store/auth"; // To check if the logged-in user is deleting themselves
+import { toast } from "react-toastify";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -81,11 +82,11 @@ export default function UsersPage() {
   const handleDeleteClick = (user: User) => {
      // Prevent deleting yourself or the main admin (ID 1)
      if (user.id === loggedInUser?.id) {
-       alert("You cannot delete your own account.");
+       toast.error("You cannot delete your own account.");
        return;
      }
      if (user.id === 1) {
-       alert("The main admin account (ID 1) cannot be deleted.");
+       toast.error("The main admin account (ID 1) cannot be deleted.");
        return;
      }
     setUserToDelete(user);
@@ -96,11 +97,11 @@ export default function UsersPage() {
     if (!userToDelete) return;
     try {
       await api.delete(`/users/${userToDelete.id}`);
-      alert("User deleted successfully");
+      toast.success("User deleted successfully");
       fetchUsers();
     } catch (error) {
       console.error("Failed to delete user:", error);
-      alert("Failed to delete user.");
+      toast.error("Failed to delete user.");
     } finally {
       setIsDeleteAlertOpen(false);
       setUserToDelete(null);

@@ -10,6 +10,7 @@ import api from "@/lib/api";
 import { useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea"; 
 import { Vendor } from "./VenderType";
+import { toast } from "react-toastify";
 
 
 const formSchema = z.object({
@@ -61,16 +62,16 @@ export default function VendorForm({ onSuccess, initialData }: VendorFormProps) 
     try {
       if (initialData) {
         await api.patch(`/vendors/${initialData.id}`, submissionData);
-        alert("Vendor updated successfully!");
+        toast.success("Vendor updated successfully!");
       } else {
         await api.post("/vendors", submissionData);
-        alert("Vendor created successfully!");
+        toast.success("Vendor created successfully!");
       }
       onSuccess();
     } catch (error) {
       console.error("Failed to save vendor:", error);
     const axiosError = error as import('axios').AxiosError;
-    alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save vendor."}`);
+    toast.error(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save vendor."}`);
     }
   };
 

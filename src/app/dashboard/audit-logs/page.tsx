@@ -6,6 +6,7 @@ import { AuditLog } from "./components/AuditLogType";
 import { DataTable } from "@/components/shared/DataTable";
 import api from "@/lib/api";
 import { useAuthStore } from "@/store/auth";
+import { toast } from "react-toastify";
 
 export default function AuditLogsPage() {
   const [logs, setLogs] = useState<AuditLog[]>([]);
@@ -20,7 +21,7 @@ export default function AuditLogsPage() {
         setLogs(response.data);
       } catch (error) {
         console.error("Failed to fetch audit logs:", error);
-        alert("Could not load audit logs.");
+        toast.error("Could not load audit logs.");
       } finally {
         setLoading(false);
       }

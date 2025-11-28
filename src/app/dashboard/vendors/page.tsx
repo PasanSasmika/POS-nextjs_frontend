@@ -9,6 +9,7 @@ import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, } f
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,} from "@/components/ui/alert-dialog";
 import { Vendor } from "./components/VenderType";
 import VendorForm from "./components/vendorForm";
+import { toast } from "react-toastify";
 
 export default function VendorsPage() {
   const [vendors, setVendors] = useState<Vendor[]>([]);
@@ -60,15 +61,15 @@ export default function VendorsPage() {
     if (!vendorToDelete) return;
     try {
       await api.delete(`/vendors/${vendorToDelete.id}`);
-      alert("Vendor deleted successfully");
+      toast.success("Vendor deleted successfully");
       fetchVendors();
     } catch (error) { 
     console.error("Failed to delete vendor:", error);
     const axiosError = error as import('axios').AxiosError;
     if (axiosError.response?.status === 409 || axiosError.response?.status === 400 ) {
-       alert((axiosError.response?.data as { message?: string })?.message || "Cannot delete vendor: They might be linked to existing products.");
+       toast.error((axiosError.response?.data as { message?: string })?.message || "Cannot delete vendor: They might be linked to existing products.");
     } else {
-       alert("Failed to delete vendor.");
+       toast.error("Failed to delete vendor.");
     }
   }finally {
       setIsDeleteAlertOpen(false);

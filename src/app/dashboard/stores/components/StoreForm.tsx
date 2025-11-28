@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/api";
 import { Store } from "./StoreType";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 
 const formSchema = z.object({
@@ -57,17 +58,17 @@ export default function StoreForm({ onSuccess, initialData }: StoreFormProps) {
       if (initialData) {
         console.log("Submitting PATCH /stores/:id", submissionData);
         await api.patch(`/stores/${initialData.id}`, submissionData);
-        alert("Store updated successfully!");
+        toast.success("Store updated successfully!");
       } else {
         console.log("Submitting POST /stores", submissionData);
         await api.post("/stores", submissionData);
-        alert("Store created successfully!");
+        toast.success("Store created successfully!");
       }
       onSuccess(); 
     } catch (error) {
       console.error("Failed to save store:", error);
     const axiosError = error as import('axios').AxiosError;
-    alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save store."}`);
+    toast.error(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save store."}`);
     }
   };
 

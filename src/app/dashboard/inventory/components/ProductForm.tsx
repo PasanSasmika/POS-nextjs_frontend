@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import api from "@/lib/api";
 import { Product } from "./ProductType";
+import { toast } from "react-toastify";
 
 interface FormData {
   name: string;
@@ -88,17 +89,17 @@ export default function ProductForm({ vendors, onSuccess, initialData }: Product
       if (initialData) {
         // --- UPDATE method ---
         await api.patch(`/products/${initialData.id}`, submissionData);
-        alert("Product updated successfully!");
+        toast.success("Product updated successfully!");
       } else {
         // --- (POST) method ---
         await api.post("/products", submissionData);
-        alert("Product created successfully!");
+        toast.success("Product created successfully!");
       }
       onSuccess(); // Call the callback to close and refresh
     } catch (error) {
       console.error("Failed to save product:", error);
     const axiosError = error as import('axios').AxiosError;
-    alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save product."}`);
+    toast.error(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save product."}`);
     } finally {
       setLoading(false);
     }

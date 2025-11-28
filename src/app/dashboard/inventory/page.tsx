@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Product } from "./components/ProductType";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 
 type Vendor = {
@@ -92,11 +93,11 @@ export default function InventoryPage() {
     if (!productToDelete) return;
     try {
       await api.delete(`/products/${productToDelete.id}`);
-      alert("Product deleted successfully");
+        toast.success("Product deleted successfully!");
       fetchProducts(); // Refresh the list
     } catch (error) {
       console.error("Failed to delete product:", error);
-      alert("Failed to delete product.");
+      toast.error("Failed to delete product.");
     } finally {
       setIsDeleteAlertOpen(false);
       setProductToDelete(null);

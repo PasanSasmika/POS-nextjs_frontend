@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage,} from "@/components/ui/form";
+import { toast } from "react-toastify";
 
 // --- Zod Schema for SKU search ---
 const SkuSearchSchema = z.object({
@@ -61,7 +62,7 @@ export default function ProductLookup() {
       form.reset(); // Clear input on success
     } catch (error) {
       console.error("Product not found for SKU:", sku, error);
-      alert("Product not found with that SKU.");
+      toast.error("Product not found with that SKU.");
       // Set an error on the form field
       form.setError("sku", { message: "Product not found" });
     }

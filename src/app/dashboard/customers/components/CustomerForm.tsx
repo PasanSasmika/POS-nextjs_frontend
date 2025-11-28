@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import api from "@/lib/api";
 import { Customer } from "./CustomerType";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -47,17 +48,18 @@ export default function CustomerForm({ onSuccess, initialData }: CustomerFormPro
       if (initialData) {
         // Update logic
         await api.patch(`/customers/${initialData.id}`, values);
-        alert("Customer updated successfully!");
+          toast.success("CUstomer Updated successfully!");
       } else {
         // Create logic
         await api.post("/customers", values);
-        alert("Customer created successfully!");
+        toast.success("CUstomer Created successfully!");
       }
       onSuccess(); // Close dialog and refresh table
     } catch (error) {
       console.error("Failed to save customer:", error);
       const axiosError = error as import('axios').AxiosError;
-      alert(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save customer."}`);
+        toast.error(`Error: ${(axiosError.response?.data as { message?: string })?.message || "Failed to save customer."}`);
+
     }
   };
 

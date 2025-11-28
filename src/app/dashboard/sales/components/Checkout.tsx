@@ -16,6 +16,7 @@ import { AxiosError } from "axios";
 import { useSalesTerminalStore } from "@/store/salesTerminal";
 import CashTenderedDialog from "./CashTenderedDialog";
 import { CompletedSale } from "./Receipt";
+import { toast } from "react-toastify";
 
 enum PaymentMethod {
   Cash = "Cash",
@@ -62,7 +63,7 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
   
   const handleFinalizeSale = async () => {
     if (items.length === 0) {
-      alert("Cannot complete sale: Your cart is empty.");
+      toast.error("Cannot complete sale: Your cart is empty.");
       throw new Error("Empty cart"); 
     }
 
@@ -88,7 +89,7 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
         items: items,      
       };
 
-      alert("Sale Completed Successfully!");
+      toast.success("Sale Completed Successfully!");
       
       onSaleComplete(completedSale);
       
@@ -105,7 +106,7 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
                        ? axiosError.response.data.message.join(', ')
                        : axiosError.response.data.message;
       }
-      alert(`Sale Failed: ${errorMessage}`);
+      toast.error(`Sale Failed: ${errorMessage}`);
       throw error;
     } finally {
       setLoading(false);
@@ -125,7 +126,7 @@ export default function Checkout({ onSaleComplete }: CheckoutProps) {
 
   const handlePayButtonPress = () => {
     if (items.length === 0) {
-      alert("Your cart is empty.");
+      toast.error("Your cart is empty.");
       return;
     }
     if (paymentMethod === PaymentMethod.Cash) {

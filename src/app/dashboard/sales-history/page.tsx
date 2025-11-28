@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import SaleDetailsDialog from "./components/SaleDetailsDialog"; // <-- IMPORT THE NEW DIALOG
+import { toast } from "react-toastify";
 
 export default function SalesHistoryPage() {
   const [sales, setSales] = useState<Sale[]>([]);
@@ -71,12 +72,12 @@ export default function SalesHistoryPage() {
       // If your backend /refund endpoint gets user from token, this is fine:
       await api.post(`/sales/${saleToRefund.id}/refund`);
 
-      alert("Sale refunded successfully!");
+      toast.success("Sale refunded successfully!");
       fetchSales(); // Refresh the sales list
     } catch (error) {
       console.error("Failed to process refund:", error);
       const axiosError = error as import('axios').AxiosError;
-      alert(`Refund failed: ${(axiosError.response?.data as { message?: string })?.message || "Check console."}`);
+      toast.error(`Refund failed: ${(axiosError.response?.data as { message?: string })?.message || "Check console."}`);
     } finally {
       setIsRefundAlertOpen(false);
       setSaleToRefund(null);

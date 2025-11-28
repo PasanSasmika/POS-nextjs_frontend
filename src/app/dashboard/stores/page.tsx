@@ -10,6 +10,7 @@ import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,} fr
 import StoreForm from "./components/StoreForm"; 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, } from "@/components/ui/alert-dialog"; 
 import { useAuthStore } from "@/store/auth"; 
+import { toast } from "react-toastify";
 
 
 export default function StoresPage() {
@@ -81,7 +82,7 @@ export default function StoresPage() {
   const handleDeleteClick = useCallback((store: Store) => {
     console.log("Delete Store action clicked:", store);
     if (store.id === 1) { 
-      alert("The main store (ID 1) cannot be deleted.");
+      toast.error("The main store (ID 1) cannot be deleted.");
       return;
     }
     setStoreToDelete(store); 
@@ -94,16 +95,16 @@ export default function StoresPage() {
     console.log("Confirming delete for store:", storeToDelete);
     try {
       await api.delete(`/stores/${storeToDelete.id}`); 
-      alert("Store deleted successfully");
+      toast.success("Store deleted successfully");
       fetchStores(); 
     } catch (error) { // Remove ': any'
     console.error("Failed to delete store:", error);
     const axiosError = error as import('axios').AxiosError; // Type assertion
     // Check for specific backend constraint error (409 Conflict or maybe 400 Bad Request depending on backend)
     if (axiosError.response?.status === 409 || axiosError.response?.status === 400) {
-        alert((axiosError.response?.data as { message?: string })?.message || "Cannot delete store: It might be linked to other records.");
+        toast.error((axiosError.response?.data as { message?: string })?.message || "Cannot delete store: It might be linked to other records.");
     } else {
-        alert("Failed to delete store. Please check console.");
+        toast.error("Failed to delete store. Please check console.");
     }
     } finally {
       setIsDeleteAlertOpen(false); 

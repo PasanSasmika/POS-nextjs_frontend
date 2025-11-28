@@ -6,6 +6,7 @@ import { StockInLog } from "./components/LogType";
 import { DataTable } from "@/components/shared/DataTable";
 import api from "@/lib/api";
 import { useAuthStore } from "@/store/auth";
+import { toast } from "react-toastify";
 
 export default function StockLogPage() {
   const [logs, setLogs] = useState<StockInLog[]>([]);
@@ -20,7 +21,7 @@ export default function StockLogPage() {
         setLogs(response.data);
       } catch (error) {
         console.error("Failed to fetch stock in logs:", error);
-        alert("Could not load stock logs.");
+        toast.error("Could not load stock logs.");
       } finally {
         setLoading(false);
       }
